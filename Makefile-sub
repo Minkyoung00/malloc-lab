@@ -1,0 +1,18 @@
+.PHONY: test clean
+
+COMMON_DIR:=../common
+
+CFLAGS=-I $(COMMON_DIR) -Wall -O2 -m32
+LDFLAGS=-Wall -O2 -m32
+OBJS=mdriver.o memlib.o fsecs.o fcyc.o clock.o ftimer.o
+
+test: mdriver
+	./mdriver -t $(COMMON_DIR)/traces
+
+mdriver: $(OBJS) mm.o
+
+$(OBJS): %.o : $(COMMON_DIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f mdriver *.o
